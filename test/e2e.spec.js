@@ -13,8 +13,6 @@ const app = express();
 app.use(express.static(path.join(__dirname, '/../public')));
 app.use(express.static(path.join(__dirname, '/../dist')));
 
-// app.listen(8888);
-
 const url = 'http://localhost:8888';
 // const urlDetail = 'http://localhost:8888/movie/tt0111161';
 chai.use(chaiHttp);
@@ -33,7 +31,6 @@ describe('Verify App', function() {
   });
 
   beforeEach(() => {
-    // nightmare = new Nightmare();
     pageObject = nightmare.goto(url);
   });
 
@@ -54,25 +51,21 @@ describe('Verify App', function() {
     axios.get(url)
       .then(response => expect(response.status === 200)));
 
-  // it('should display an input field for searching', () =>
-  //   nightmare
-  //     .goto(url)
-  //     .evaluate(() => document.querySelector('input[id=searchText]').innerText)
-  //     .end()
-  //     .then(output => {
-  //       expect(output).to.exist;
-  //     })
-  //   );
+  it('should display an input field for searching', () => {
+    return pageObject
+      .evaluate(() => document.querySelector('input[id=searchText]').innerText)
+      .then(output => {
+        expect(output).to.exist;
+      });
+  });
 
-  // it('should display an button for searching', () =>
-  //   nightmare
-  //     .goto(url)
-  //     .evaluate(() => document.querySelector('#searchBtn').innerText)
-  //     .end()
-  //     .then(output => {
-  //       expect(output).to.exist;
-  //     })
-  // );
+  it('should display a button for searching', () => {
+    return pageObject
+      .evaluate(() => document.querySelector('#searchBtn').innerText)
+      .then(output => {
+        expect(output).to.exist;
+      });
+  });
 
   it('should get an object when good search term is used', (done) => {
     chai.request(app)
@@ -94,21 +87,19 @@ describe('Verify App', function() {
       });
   });
 
-  // it('should give an error message when search term does not find anything', () =>
-  //   nightmare
-  //     .goto(url)
-  //     .type('#searchText', 'sdafsd')
-  //     .click('#searchBtn')
-  //     .wait(3000)
-  //     .evaluate(() => document.querySelector('#error').innerText)
-  //     .end()
-  //     .then((output) => {
-  //       expect(output).to.exist;
-  //       expect(output).to.not.be.null;
-  //       expect(typeof output).to.equal('string');
-  //       expect(output).to.equal('There was a problem with your request');
-  //     })
-  //   );
+  it('should give an error message when search term does not find anything', () => {
+    return pageObject
+      .type('#searchText', 'sdafsd')
+      .click('#searchBtn')
+      .wait(3000)
+      .evaluate(() => document.querySelector('#error').innerText)
+      .then((output) => {
+        expect(output).to.exist;
+        expect(output).to.not.be.null;
+        expect(typeof output).to.equal('string');
+        expect(output).to.equal('There was a problem with your request');
+      });
+  });
 });
 
 describe('Verify actions', () => {
