@@ -9,24 +9,39 @@ const chaiHttp = require('chai-http');
 const expect = require('chai').expect;
 const axios = require('axios');
 
-let nightmare;
-let pageObject;
+
 
 const app = express();
 app.use(express.static(path.join(__dirname, '/../public')));
 app.use(express.static(path.join(__dirname, '/../dist')));
 
-app.listen(8888);
+// app.listen(8888);
 
 const url = 'http://localhost:8888';
 // const urlDetail = 'http://localhost:8888/movie/tt0111161';
 chai.use(chaiHttp);
 
+let nightmare = new Nightmare();
+
 describe('Verify App', function() {
   this.timeout(12000);
+
+  let pageObject = null;
+  let httpServer = null;
+
+  before((done) => {
+    httpServer = app.listen(8888);
+    done();
+  });
+
   beforeEach(() => {
-    nightmare = new Nightmare();
+    // nightmare = new Nightmare();
     pageObject = nightmare.goto(url);
+  });
+
+  after((done) => {
+    httpServer.close();
+    done();
   });
 
   it('should have the correct page title for main page', () => {
