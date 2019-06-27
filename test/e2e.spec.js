@@ -27,6 +27,7 @@ describe('express', () => {
       .evaluate(() => document.querySelector('body').innerText)
       .end()
       .then((text) => {
+        console.log(`text=${text}`);
         expect(text).to.equal('Hello World');
       })
   );
