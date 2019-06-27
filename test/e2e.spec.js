@@ -10,6 +10,7 @@ const expect = require('chai').expect;
 const axios = require('axios');
 
 let nightmare;
+let pageObject;
 
 const app = express();
 app.use(express.static(path.join(__dirname, '/../public')));
@@ -25,31 +26,30 @@ describe('Verify App', function() {
   this.timeout(12000);
   beforeEach(() => {
     nightmare = new Nightmare();
+    pageObject = nightmare.goto(url);
   });
 
-  it('should have the correct page title for main page', () =>
-    nightmare
-      .goto(url)
+  it('should have the correct page title for main page', () => {
+    return pageObject
       .evaluate(() => document.querySelector('body').innerText)
-      .end()
       .then((text) => {
         expect(text).to.contain('Movie Finder');
-      })
-  );
+      });
+  });
 
   it('returns the correct status code on search page', () =>
     axios.get(url)
       .then(response => expect(response.status === 200)));
 
   it('should display an input field for searching', () =>
-  nightmare
-    .goto(url)
-    .evaluate(() => document.querySelector('input[id=searchText]').innerText)
-    .end()
-    .then(output => {
-      expect(output).to.exist;
-    })
-  );
+    nightmare
+      .goto(url)
+      .evaluate(() => document.querySelector('input[id=searchText]').innerText)
+      .end()
+      .then(output => {
+        expect(output).to.exist;
+      })
+    );
 
   it('should display an button for searching', () =>
     nightmare
