@@ -21,7 +21,8 @@ const url = 'http://localhost:8888';
 // const urlDetail = 'http://localhost:8888/movie/tt0111161';
 chai.use(chaiHttp);
 
-describe('Verify App', () => {
+describe('Verify App', function() {
+  this.timeout(6500);
   beforeEach(() => {
     nightmare = new Nightmare();
   });
@@ -81,21 +82,21 @@ describe('Verify App', () => {
   });
 
   it('should give an error message when search term does not find anything', () =>
-  nightmare
-    .goto(url)
-    .type('#searchText', 'sdafsd')
-    .click('#searchBtn')
-    .wait('#error')
-    .evaluate(() => document.querySelector('#error').innerText)
-    .end()
-    .then((output) => {
-      expect(output).to.exist;
-      expect(output).to.not.be.null;
-      expect(typeof output).to.equal('string');
-      expect(output).to.equal('There was a problem with your request');
-    })
-  ).timeout(6500);
-});
+    nightmare
+      .goto(url)
+      .type('#searchText', 'sdafsd')
+      .click('#searchBtn')
+      .wait(3000)
+      .evaluate(() => document.querySelector('#error').innerText)
+      .end()
+      .then((output) => {
+        expect(output).to.exist;
+        expect(output).to.not.be.null;
+        expect(typeof output).to.equal('string');
+        expect(output).to.equal('There was a problem with your request');
+      })
+    );
+}).timeout(6500);
 
 describe('Verify actions', () => {
   it('should return an object for setSearch', (done) => {
