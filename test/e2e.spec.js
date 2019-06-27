@@ -9,15 +9,13 @@ const chaiHttp = require('chai-http');
 const expect = require('chai').expect;
 const axios = require('axios');
 
-
-
 const app = express();
 app.use(express.static(path.join(__dirname, '/../public')));
 app.use(express.static(path.join(__dirname, '/../dist')));
 
 // app.listen(8888);
 
-const url = 'http://localhost:8888';
+const url = 'https://localhost:8888';
 // const urlDetail = 'http://localhost:8888/movie/tt0111161';
 chai.use(chaiHttp);
 
