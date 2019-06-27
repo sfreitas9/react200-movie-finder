@@ -111,7 +111,7 @@ describe('Verify App', function() {
   //       expect(output).to.equal('There was a problem with your request');
   //     })
   //   );
-}).timeout(6500);
+});
 
 describe('Verify actions', () => {
   it('should return an object for setSearch', (done) => {
