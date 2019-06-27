@@ -3,7 +3,6 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import promiseMiddleware from 'redux-promise-middleware';
-import thunk from 'redux-thunk';
 import movieReducer from './MovieSearchContainer/movieReducer';
 import App from './app';
 
@@ -17,7 +16,7 @@ const rootReducer = combineReducers({
 
 const store = createStore(
   rootReducer,
-  composeEnhancers(applyMiddleware(promiseMiddleware(), thunk))
+  composeEnhancers(applyMiddleware(promiseMiddleware()))
 );
 /* eslint-enable */
 

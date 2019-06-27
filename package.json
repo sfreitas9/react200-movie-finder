@@ -8,7 +8,7 @@
     "start": "npm run build && node server/index.js",
     "less": "lessc src/css/style.less dist/css/style.css",
     "lint": "eslint .",
-    "test": "npm run build && mocha test/setup.js test/*.spec.js --exit"
+    "test": "npm run less && webpack && mocha test/setup.js test/*.spec.js --exit"
   },
   "dependencies": {
     "axios": "^0.16.1",
@@ -28,11 +28,11 @@
     "lodash-webpack-plugin": "^0.10.2",
     "morgan": "^1.8.1",
     "prop-types": "^15.5.10",
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2",
-    "react-redux": "^5.0.6",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-redux": "^7.0.3",
     "react-router": "^5.0.1",
-    "react-router-dom": "^4.3.1",
+    "react-router-dom": "^5.0.0",
     "redux": "^4.0.1",
     "redux-promise-middleware": "^5.1.1",
     "redux-thunk": "^2.3.0",

@@ -8,7 +8,6 @@ export default class App extends Component {
     return (
       <Router>
         <div className='container'>
-          {/* <h1 className='text-center my-5'>Movie Finder</h1> */}
           <Route exact path='/' component={ MovieSearchContainer } />
           <Route path='/movie/:id' component={ MovieDetailContainer } />
         </div>

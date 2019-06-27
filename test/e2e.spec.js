@@ -1,7 +1,11 @@
 /* global define, it, describe, beforeEach, document */
+import { getMovies, setSearch } from '../src/js/MovieSearchContainer/movieSearchActions';
+
 const express = require('express');
 const path = require('path');
 const Nightmare = require('nightmare');
+const chai = require('chai');
+const chaiHttp = require('chai-http');
 const expect = require('chai').expect;
 const axios = require('axios');
 
@@ -14,24 +18,95 @@ app.use(express.static(path.join(__dirname, '/../dist')));
 app.listen(8888);
 
 const url = 'http://localhost:8888';
+// const urlDetail = 'http://localhost:8888/movie/tt0111161';
+chai.use(chaiHttp);
 
-
-describe('express', () => {
+describe('Verify App', () => {
   beforeEach(() => {
     nightmare = new Nightmare();
   });
 
-  it('should have the correct page title', () =>
+  it('should have the correct page title for main page', () =>
     nightmare
       .goto(url)
       .evaluate(() => document.querySelector('body').innerText)
       .end()
       .then((text) => {
-        console.log(`text=${text}`);
-        expect(text).to.equal('Hello World');
+        expect(text).to.contain('Movie Finder');
       })
   );
 
-  it('returns the correct status code', () => axios.get(url)
-    .then(response => expect(response.status === 200)));
+  it('returns the correct status code on search page', () =>
+    axios.get(url)
+      .then(response => expect(response.status === 200)));
+
+  it('should display an input field for searching', () =>
+  nightmare
+    .goto(url)
+    .evaluate(() => document.querySelector('input[id=searchText]').innerText)
+    .end()
+    .then(output => {
+      expect(output).to.exist;
+    })
+  );
+
+  it('should display an button for searching', () =>
+    nightmare
+      .goto(url)
+      .evaluate(() => document.querySelector('#searchBtn').innerText)
+      .end()
+      .then(output => {
+        expect(output).to.exist;
+      })
+  );
+
+  it('should get an object when good search term is used', (done) => {
+    chai.request(app)
+      .get('/movies/fun')
+      .end((err, res) => {
+        expect(typeof res).to.equal('object');
+        expect(err).to.be.null;
+        done();
+      });
+  });
+
+  it('should get an object for Detail page', (done) => {
+    chai.request(app)
+      .get('/movie/tt0111161')
+      .end((err, res) => {
+        expect(typeof res).to.equal('object');
+        expect(err).to.be.null;
+        done();
+      });
+  });
+
+  it('should give an error message when search term does not find anything', () =>
+  nightmare
+    .goto(url)
+    .type('#searchText', 'sdafsd')
+    .click('#searchBtn')
+    .wait('#error')
+    .evaluate(() => document.querySelector('#error').innerText)
+    .end()
+    .then((output) => {
+      expect(output).to.exist;
+      expect(output).to.not.be.null;
+      expect(typeof output).to.equal('string');
+      expect(output).to.equal('There was a problem with your request');
+    })
+  ).timeout(6500);
+});
+
+describe('Verify actions', () => {
+  it('should return an object for setSearch', (done) => {
+    const search = setSearch('Terminator');
+    expect(search).to.be.a('object');
+    done();
+  });
+
+  it('should return an object for getMovies', (done) => {
+    const search = getMovies('Terminator');
+    expect(search).to.be.a('object');
+    done();
+  });
 });

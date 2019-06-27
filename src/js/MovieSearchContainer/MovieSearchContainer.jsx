@@ -28,22 +28,21 @@ class MovieSearchContainer extends React.Component {
   }
 
   render() {
-    console.log('in MovieSearchContainer');
     return (
       <div className='container'>
         <h1 className='text-center my-5'>Movie Finder</h1>
         <div className='input-group mb-5'>
           <input
-            type='text' className='form-control' placeholder='Movie Title'
+            type='text' id='searchText' className='form-control' placeholder='Movie Title'
             onChange={ this.handleChange } onKeyPress={ this.handleEnter }
           />
           <div className='input-group-append'>
-            <button className='btn btn-secondary' type='submit' onClick={ this.handleSearch }>Go!</button>
+            <button id='searchBtn' className='btn btn-primary' type='submit' onClick={ this.handleSearch }>Go!</button>
           </div>
         </div>
 
         { this.props.movies && this.props.movies.map(movie => (
-          <div className='card border border-dark p-3 mb-2' key={ movie.imdbID }>
+          <div id='searchResults' className='card border border-dark p-3 mb-2' key={ movie.imdbID }>
             <div className='card-body'>
               <div className='row mb-2'>
                 <div className='col-3'>
@@ -54,13 +53,14 @@ class MovieSearchContainer extends React.Component {
                   <h6>{ movie.Year }</h6>
                   <hr />
                   <p>{ movie.Plot }</p>
-                  <Link to={ `/movie/${movie.imdbID}` } className='btn btn-primary float-right'>More Information</Link>
+                  <Link to={ { pathname: `/movie/${movie.imdbID}`, state: { movie } } } className='btn btn-primary float-right'>More Information</Link>
+                  {/* <Link to={ `/movie/${movie.imdbID}` } className='btn btn-primary float-right'>More Information</Link> */}
                 </div>
               </div>
             </div>
           </div>
         ))}
-        <div className='text-danger'>{ this.props.error }</div>
+        <div id='error' className='text-danger'>{ this.props.error }</div>
       </div>
     );
   }

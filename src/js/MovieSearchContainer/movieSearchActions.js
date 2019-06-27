@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 export const getMovies = (movie) => {
-  console.log(`getMovies: ${movie}`);
   return {
     type: 'GET_MOVIES',
     payload: axios.get(`/movies/${movie}`)
