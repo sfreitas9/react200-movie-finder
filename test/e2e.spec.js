@@ -22,7 +22,7 @@ const url = 'http://localhost:8888';
 chai.use(chaiHttp);
 
 describe('Verify App', function() {
-  this.timeout(6500);
+  this.timeout(12000);
   beforeEach(() => {
     nightmare = new Nightmare();
   });
